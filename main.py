@@ -46,7 +46,9 @@ desclist = ["Набор ‘Базовый’ за 6 000₸\n"
 
 # First level elements (MENU)
 firstLevel = types.ReplyKeyboardMarkup(resize_keyboard=True)
-firstLevel.add('🍿Арендовать проектор!').add('☎️ Заказать звонок').add('🪩Мы в Instagram')
+firstLevel.add('🍿Арендовать проектор!').add('☎️ Заказать звонок').add('🛠 Инструкция сборки').add('🪩Мы в Instagram')
+
+
 
 # Second level [🍿Арендовать проектор!]
 secondLevelOne = types.InlineKeyboardMarkup(row_width=1)
@@ -68,6 +70,14 @@ secondLevelTwo.add(types.KeyboardButton('📞 Отправить мой номе
 # Second level [Button 'Назад']
 secondLevelTwoInline = types.InlineKeyboardMarkup()
 secondLevelTwoInline.add(types.InlineKeyboardButton(text='Назад', callback_data='outremoveback'))
+
+# Second level ['Button Instruction']
+secondLevelFourth = types.InlineKeyboardMarkup(row_width=1)
+secondLevelFourth.add(InlineKeyboardButton(text='Проектор Wanbo T2/Max/R', url='https://youtu.be/w1AnVElgmA4'),
+                      InlineKeyboardButton(text='Проектор Wanbo T6/Max', url='https://youtu.be/w1AnVElgmA4'),
+                      InlineKeyboardButton(text='Сборка штатива', callback_data='neepho'),
+                      InlineKeyboardButton(text='Назад', callback_data='backmenu'))
+
 
 # Second level [🪩Мы в Instagram]
 secondLevelThree = types.InlineKeyboardMarkup(row_width=1)
@@ -104,6 +114,10 @@ async def order(message: types.Message):
 @dp.message_handler(text='🪩Мы в Instagram')
 async def rent(message: types.Message):
     await message.answer('Ссылка на Instagram', reply_markup=secondLevelThree)
+
+@dp.message_handler(text='🛠 Инструкция сборки')
+async def instuction(message: types.Message):
+    await message.answer("Список инструкции:", reply_markup=secondLevelFourth)
 
 @dp.message_handler(content_types=types.ContentType.CONTACT)
 async def process_contact(message: types.Message):
@@ -167,6 +181,9 @@ async def callbackFunctions(call: types.CallbackQuery):
     elif call.data == 'shmap':
         with open(f'./{folder_path}/map.jpg', 'rb') as mapScreen:
             await bot.send_photo(chat_id=call.from_user.id, photo=mapScreen, caption="Зона бесплатной доставки")
+    elif call.data == 'neepho':
+        with open(f'./{folder_path}/instruction.png', 'rb') as instruction:
+            await bot.send_photo(chat_id=call.from_user.id, photo=instruction, caption="Модель Neepho (пошаговая инструкция): ", reply_markup=additionalBack)
     elif call.data == 'backmenu':
         await bot.edit_message_text(chat_id=call.from_user.id, message_id=call.message.message_id, text="Главный меню")
         await bot.delete_message(chat_id=call.from_user.id, message_id=(call.message.message_id))
@@ -178,6 +195,7 @@ async def callbackFunctions(call: types.CallbackQuery):
         orderActive = False
     elif call.data == 'outremoveback':
         await bot.send_message(chat_id=call.from_user.id, text="Главный меню", reply_markup=firstLevel)
+
 
 @dp.message_handler()
 async def noidea(message: types.Message):
