@@ -74,7 +74,7 @@ secondLevelTwoInline.add(types.InlineKeyboardButton(text='Назад', callback_
 # Second level ['Button Instruction']
 secondLevelFourth = types.InlineKeyboardMarkup(row_width=1)
 secondLevelFourth.add(InlineKeyboardButton(text='Проектор Wanbo T2/Max/R', url='https://youtu.be/w1AnVElgmA4'),
-                      InlineKeyboardButton(text='Проектор Wanbo T6/Max', url='https://youtu.be/w1AnVElgmA4'),
+                      InlineKeyboardButton(text='Проектор Wanbo T6/Max', url='https://youtu.be/Od-mlRG_G5M'),
                       InlineKeyboardButton(text='Сборка штатива', callback_data='neepho'),
                       InlineKeyboardButton(text='Назад', callback_data='backmenu'))
 
@@ -183,7 +183,7 @@ async def callbackFunctions(call: types.CallbackQuery):
             await bot.send_photo(chat_id=call.from_user.id, photo=mapScreen, caption="Зона бесплатной доставки")
     elif call.data == 'neepho':
         with open(f'./{folder_path}/instruction.png', 'rb') as instruction:
-            await bot.send_photo(chat_id=call.from_user.id, photo=instruction, caption="Модель Neepho (пошаговая инструкция): ", reply_markup=additionalBack)
+            await bot.send_photo(chat_id=call.from_user.id, photo=instruction, caption="Модель Neepho (пошаговая инструкция) ", reply_markup=additionalBack)
     elif call.data == 'backmenu':
         await bot.edit_message_text(chat_id=call.from_user.id, message_id=call.message.message_id, text="Главный меню")
         await bot.delete_message(chat_id=call.from_user.id, message_id=(call.message.message_id))
